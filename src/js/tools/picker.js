@@ -1,5 +1,5 @@
 import { h } from '../dom.js';
-import { pick, randomBelow, sample } from '../lib/random.js';
+import { randomBelow, sample } from '../lib/random.js';
 import { sleep } from '../motion.js';
 import { createReel } from '../reel.js';
 import { button, copyButton, createHistory, listEditor, liveRegion, numberField, panel, switchField, whileBusy } from '../ui.js';
@@ -75,7 +75,9 @@ export function createPickerTool({ id, icon, category = 'decide', messages }) {
               return;
             }
             note.textContent = '';
-            const winners = n === 1 ? [pick(items)] : sample(items, n);
+            // Über Positionen ziehen: Doppelte Einträge wirken als Gewichtung und werden einzeln entfernt.
+            const picked = n === 1 ? [randomBelow(items.length)] : sample([...items.keys()], n);
+            const winners = picked.map((i) => items[i]);
 
             if (n === 1) {
               winnersList.hidden = true;
@@ -105,7 +107,7 @@ export function createPickerTool({ id, icon, category = 'decide', messages }) {
             live.textContent = winners.join(', ');
             history.add(winners.join(', '));
             if (remove.get()) {
-              const rest = items.filter((item) => !winners.includes(item));
+              const rest = items.filter((_, i) => !picked.includes(i));
               editor.set(rest.join('\n'));
             }
           }),

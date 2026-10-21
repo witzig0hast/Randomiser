@@ -200,6 +200,20 @@ function renderTool(tool) {
     console.error(error);
     mount(stage, h('p', { class: 'empty' }, t('app.loadError')));
   }
+
+  // Leertaste löst die Hauptaktion aus, solange der Fokus nicht in einem Bedienelement liegt.
+  const shortcut = stage.querySelector('.stage [data-shortcut]') ?? stage.querySelector('.stage .btn-primary');
+  if (shortcut) {
+    shortcut.setAttribute('aria-keyshortcuts', 'Space');
+    const onKey = (e) => {
+      if (e.key !== ' ' || e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.target.closest?.('input, textarea, select, button, a, [contenteditable], [role="radio"]')) return;
+      e.preventDefault();
+      if (!shortcut.disabled) shortcut.click();
+    };
+    document.addEventListener('keydown', onKey);
+    cleanups.push(() => document.removeEventListener('keydown', onKey));
+  }
   document.title = `${tt('title')} – ${t('app.name')}`;
   return page;
 }

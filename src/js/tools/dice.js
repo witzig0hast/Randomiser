@@ -50,8 +50,8 @@ export default {
   },
   mount(root, ctx) {
     const { t } = ctx;
-    const stored = ctx.load('sides', 6);
-    let sides = stored;
+    const stored = Math.round(Number(ctx.load('sides', 6)));
+    let sides = stored >= 2 && stored <= 1000 ? stored : 6;
 
     const tray = h('div', { class: 'dice-tray' });
     const totalEl = h('p', { class: 'dice-total' }, ' ');

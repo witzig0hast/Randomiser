@@ -32,6 +32,7 @@ export default {
     const { t } = ctx;
     let heads = 0;
     let tails = 0;
+    let face = 0; // aktuelle Lage: 0° = Kopf oben, 180° = Zahl oben
 
     const coin = h('div', { class: 'coin' });
     const front = h('div', { class: 'coin-face is-front' }, faceArt('heads'), h('span', { class: 'coin-label' }, t('heads')));
@@ -60,11 +61,13 @@ export default {
       onClick: () =>
         whileBusy(flip, async () => {
           const isHeads = chance(50);
-          const end = (5 + randomInt(0, 3)) * 360 + (isHeads ? 0 : 180);
+          const target = isHeads ? 0 : 180;
+          // Die Drehung startet in der aktuellen Lage, sonst würde die Münze zu Beginn sichtbar umspringen.
+          const end = face + (5 + randomInt(0, 3)) * 360 + ((target - face + 360) % 360);
           const time = dur(1900);
           note.textContent = '';
           await Promise.all([
-            play(coin, [{ transform: 'rotateX(0deg)' }, { transform: `rotateX(${end}deg)` }], { duration: time, easing: 'cubic-bezier(0.22, 0.7, 0.28, 1)' }),
+            play(coin, [{ transform: `rotateX(${face}deg)` }, { transform: `rotateX(${end}deg)` }], { duration: time, easing: 'cubic-bezier(0.22, 0.7, 0.28, 1)' }),
             play(
               arc,
               [
@@ -84,7 +87,8 @@ export default {
               { duration: time },
             ),
           ]);
-          settle(coin, { transform: `rotateX(${isHeads ? 0 : 180}deg)` });
+          face = target;
+          settle(coin, { transform: `rotateX(${face}deg)` });
           settle(arc);
           settle(shadow);
           if (isHeads) heads++;

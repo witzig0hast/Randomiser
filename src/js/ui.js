@@ -137,18 +137,22 @@ export function stepper({ label, value, min = 1, max = 99, onChange, class: cls 
 
 /** Segmentierte Auswahl (Radiogruppe). */
 export function segmented({ label, options, value, onChange, hideLabel = false, class: cls = '' }) {
-  let current = value ?? options[0].value;
+  // `null` bedeutet bewusst „nichts gewählt“ (z. B. eigene Würfelseitenzahl), nur `undefined` fällt auf die erste Option zurück.
+  let current = value === undefined ? options[0].value : value;
   const group = h('div', { class: 'segmented', role: 'radiogroup', 'aria-label': label });
   const buttons = options.map((opt) =>
     h('button', { type: 'button', class: 'segmented-item', role: 'radio', dataset: { value: String(opt.value) }, onClick: () => select(opt.value, true) }, opt.label),
   );
-  const paint = () =>
+  const paint = () => {
     buttons.forEach((b, i) => {
       const active = String(options[i].value) === String(current);
       b.setAttribute('aria-checked', String(active));
       b.tabIndex = active ? 0 : -1;
       b.classList.toggle('is-active', active);
     });
+    // Ohne aktive Option bleibt die Gruppe trotzdem per Tab erreichbar.
+    if (!buttons.some((b) => b.tabIndex === 0)) buttons[0].tabIndex = 0;
+  };
   function select(v, notify) {
     current = v;
     paint();

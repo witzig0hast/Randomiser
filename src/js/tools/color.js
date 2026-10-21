@@ -1,4 +1,5 @@
 import { h } from '../dom.js';
+import { icon } from '../icons.js';
 import { hslToRgb, readableOn, rgbToHex, rgbToHsl } from '../lib/color.js';
 import { pick, randomInt } from '../lib/random.js';
 import { button, copyText, createHistory, iconButton, panel, segmented } from '../ui.js';
@@ -107,8 +108,8 @@ export default {
         const label = locked[i] ? t('unlock') : t('lock');
         sw.lock.title = label;
         sw.lock.setAttribute('aria-label', label);
-        sw.lock.replaceChildren();
-        sw.lock.append(h('span', { class: 'swatch-lock-icon' }, locked[i] ? '●' : '○'));
+        sw.lock.setAttribute('aria-pressed', String(locked[i]));
+        sw.lock.replaceChildren(icon(locked[i] ? 'lock' : 'unlock', { size: 18 }));
       });
     }
 

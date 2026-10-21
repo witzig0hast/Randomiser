@@ -50,6 +50,9 @@ Websockets werden nicht benötigt. HSTS am besten hier oder in Cloudflare aktivi
 * Die Dateien unter `/assets/` tragen einen Inhalts-Hash und sind mit `immutable` ein Jahr cachebar. Cloudflare liefert sie aus
   dem Cache aus, sodass kaum Anfragen beim Server ankommen.
 * Optional: eine WAF-Rate-Limiting-Regel direkt in Cloudflare, damit Floods den Server gar nicht erreichen.
+* **Rocket Loader, Automatic Platform Optimization und die automatische Web-Analytics-Einbindung ausgeschaltet lassen.**
+  Diese Funktionen schreiben Skripte in die Seite um oder fügen fremde ein. Die strikte Content-Security-Policy blockiert das,
+  bei Rocket Loader startet die App dann gar nicht. „Auto Minify“ ist unnötig, die Dateien sind bereits minifiziert.
 
 ### Direktzugriff auf den Port verhindern
 

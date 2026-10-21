@@ -138,6 +138,7 @@ export default {
 
     const actions = ['truth', 'dare', 'random'].map((kind) => {
       const b = button({ label: t(kind), icon: kind === 'random' ? 'shuffle' : 'truth', variant: kind === 'random' ? 'secondary' : 'primary', size: 'lg', onClick: () => run(kind) });
+      if (kind === 'random') b.dataset.shortcut = '';
       buttons.push(b);
       return b;
     });
