@@ -1,0 +1,326 @@
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--text);
+  color: var(--bg);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+.skip-link:focus {
+  top: 0.75rem;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Kopfzeile */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 3.75rem;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: 1.05rem;
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.main {
+  flex: 1;
+  padding-block: clamp(1.5rem, 4vw, 3rem) 4rem;
+  outline: none;
+}
+
+/* Fußzeile */
+.site-footer {
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.footer-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-block: 1.25rem;
+  max-width: var(--container);
+}
+.footer-inner .icon {
+  margin-top: 0.1rem;
+}
+
+/* Startseite */
+.hero {
+  padding-block: clamp(0.5rem, 3vw, 2rem) clamp(1.5rem, 3vw, 2.25rem);
+  max-width: 44rem;
+}
+.hero-title {
+  font-size: clamp(2.1rem, 1.2rem + 4vw, 3.5rem);
+  line-height: 1.04;
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  outline: none;
+}
+.hero-text {
+  margin-top: 1rem;
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.175rem);
+  color: var(--muted);
+  max-width: 36rem;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.875rem 1.25rem;
+  margin-bottom: 2.25rem;
+}
+.search {
+  position: relative;
+  flex: 1 1 18rem;
+  max-width: 28rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 0.85rem;
+  height: 2.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--muted);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.search:focus-within {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 25%, transparent);
+  color: var(--text);
+}
+.search-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  outline: none;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+.search-input::placeholder {
+  color: var(--muted);
+}
+.search-input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+.kbd {
+  font: 600 0.75rem/1 var(--mono);
+  padding: 0.25rem 0.45rem;
+  border: 1px solid var(--border-strong);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  color: var(--muted);
+  background: var(--surface-2);
+}
+.search:focus-within .kbd {
+  display: none;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.chip {
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 0.8125rem;
+  font-weight: 550;
+  color: var(--muted);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.chip:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+.chip.is-active {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--bg);
+}
+
+.catalog {
+  display: grid;
+  gap: 2.5rem;
+}
+.category-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+  margin-bottom: 0.9rem;
+}
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17.5rem), 1fr));
+  gap: 0.75rem;
+}
+.tool-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 1rem 1.05rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.tool-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.tool-card-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.tool-card-body {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.tool-card-title {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.tool-card-desc {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.empty {
+  padding: 3rem 0;
+  color: var(--muted);
+}
+
+/* Werkzeugseite */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 550;
+  color: var(--muted);
+}
+.back-link:hover {
+  color: var(--text);
+}
+.tool-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+.tool-header-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 14px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+.tool-title {
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.125rem);
+  font-weight: 720;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  outline: none;
+}
+.tool-desc {
+  margin-top: 0.2rem;
+  color: var(--muted);
+}
+
+.tool-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+.stage-col,
+.controls-col {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
+.tool-body.is-single {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 46rem;
+}
+
+@media (max-width: 54rem) {
+  .tool-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 30rem) {
+  .brand-name {
+    display: none;
+  }
+  .tool-header-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}

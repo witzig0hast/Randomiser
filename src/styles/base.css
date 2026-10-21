@@ -1,0 +1,147 @@
+/* Design-Tokens. Farben nutzen light-dark(), Umschaltung über color-scheme. */
+:root {
+  color-scheme: light dark;
+
+  --bg: light-dark(#f6f5f1, #111110);
+  --surface: light-dark(#ffffff, #1a1a18);
+  --surface-2: light-dark(#f0eee8, #232320);
+  --surface-3: light-dark(#e8e5dc, #2c2b27);
+  --border: light-dark(#e3e0d6, #2d2c28);
+  --border-strong: light-dark(#cbc7ba, #46443e);
+  --text: light-dark(#1a1916, #f2f0ea);
+  --muted: light-dark(#625e55, #a7a398);
+  --accent: light-dark(#d4430b, #ff7a45);
+  --accent-hover: light-dark(#b93a08, #ff9266);
+  --accent-contrast: light-dark(#ffffff, #1c1008);
+  --accent-soft: light-dark(#fbebe2, #35200f);
+  --success: light-dark(#17724a, #4fd68b);
+  --success-soft: light-dark(#e2f4ea, #12281c);
+  --danger: light-dark(#b3261e, #ff8a80);
+  --danger-soft: light-dark(#fbe7e5, #321614);
+  --focus: light-dark(#1a56db, #8ab4ff);
+  --shadow-sm: 0 1px 2px light-dark(rgb(26 25 22 / 0.06), rgb(0 0 0 / 0.4));
+  --shadow-md: 0 8px 24px -8px light-dark(rgb(26 25 22 / 0.16), rgb(0 0 0 / 0.55));
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 18px;
+
+  --font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  --mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --container: 1120px;
+  --gutter: clamp(1rem, 4vw, 2rem);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 1rem/1.55 var(--font);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+p,
+ol,
+ul {
+  margin: 0;
+}
+
+ol,
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.icon {
+  flex: none;
+  display: block;
+}
+
+.noscript {
+  max-width: 40rem;
+  margin: 4rem auto;
+  padding: 0 1rem;
+  text-align: center;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

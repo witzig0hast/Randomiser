@@ -1,0 +1,19 @@
+{
+  "name": "randomiser",
+  "version": "1.0.0",
+  "description": "Zufallsplattform: Ja/Nein, Würfel, Zahlen, Glücksrad und mehr. Läuft vollständig im Browser.",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "node scripts/build.mjs && node scripts/serve.mjs",
+    "test": "node --test \"test/*.test.js\""
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10"
+  }
+}
