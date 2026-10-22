@@ -115,6 +115,7 @@ export default {
       }),
     );
     const randomBtn = button({ label: t('random'), icon: 'shuffle', variant: 'ghost', size: 'sm', onClick: () => run(pick(HANDS)) });
+    randomBtn.dataset.shortcut = ''; // Leertaste spielt eine zufällige Hand
     buttons.push(randomBtn);
 
     root.classList.add('is-single');

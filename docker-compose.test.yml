@@ -1,0 +1,25 @@
+# Test-Stack: der echte, gehärtete Produktions-Container plus ein Chromium-Testcontainer.
+# Aufruf über ./scripts/test-docker.sh (baut, testet, prüft die Härtung und räumt auf).
+name: randomiser-test
+
+services:
+  app:
+    # Exakt die Produktionskonfiguration, nur ohne veröffentlichten Port und festen Containernamen,
+    # damit der Test neben einer laufenden Produktion funktioniert.
+    extends:
+      file: docker-compose.yml
+      service: randomiser
+    container_name: !reset null
+    ports: !reset []
+
+  e2e:
+    build:
+      context: .
+      dockerfile: test/e2e/Dockerfile
+    image: randomiser-e2e:latest
+    depends_on:
+      app:
+        condition: service_healthy
+    environment:
+      BASE_URL: http://app:8080
+    shm_size: 512m

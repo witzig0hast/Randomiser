@@ -80,16 +80,34 @@ Die Client-IP stammt aus `CF-Connecting-IP`. Dem Header wird nur von privaten Ad
 * **Zufall:** `crypto.getRandomValues` mit Rejection Sampling (kein Modulo-Bias), Fisher-Yates-Mischung, nie `Math.random`.
 * **Passwörter** werden nur im Speicher erzeugt, nicht gespeichert und nicht protokolliert.
 
-## Entwicklung
+## Entwicklung und Tests (nur Docker nötig)
 
-```bash
-npm install
-npm test          # Tests für Zufallskern, Farben, Konfiguration
-npm start         # baut nach dist/ und serviert auf http://127.0.0.1:8080 (mit denselben Headern wie in Produktion)
-```
+Auf dem Rechner wird nur Docker mit Compose v2.24 oder neuer gebraucht, kein Node.js.
 
-Die Tests prüfen unter anderem die Gleichverteilung per Chi-Quadrat, Passwort-Eigenschaften, Würfelnotation und dass die CSP in Nginx
-mit der des Quellcodes übereinstimmt.
+| Zweck | Befehl |
+|---|---|
+| Produktion starten | `docker compose up -d --build` |
+| Alles bauen und testen | `./scripts/test-docker.sh` |
+| Entwickeln mit Live-Neubau | `docker compose -f docker-compose.dev.yml up`, dann http://127.0.0.1:5173 |
+
+**`./scripts/test-docker.sh`** baut beide Images, startet den echten Produktions-Container mit allen Härtungen und prüft dann:
+
+1. **Unit-Tests** (laufen beim Image-Build): Gleichverteilung per Chi-Quadrat, Passwortregeln, Würfelnotation, Farben,
+   kein `innerHTML`, kein unsicherer Zufall, CSP von Nginx und Quellcode identisch.
+2. **Härtung des Containers:** read-only, alle Capabilities entfernt, `no-new-privileges`, Speicher- und Prozesslimit,
+   kein root, Webroot nicht beschreibbar, kein Node.js im Laufzeit-Image.
+3. **HTTP** aus einem zweiten Container: Sicherheits-Header, Caching, nur GET/HEAD, 404 für versteckte Dateien,
+   Rate-Limit (eine IP wird gebremst, andere bleiben frei, Erholung nach kurzer Pause).
+4. **Browser** (Chromium im Playwright-Container): jedes Werkzeug hell und dunkel, mit und ohne Animationen,
+   Sprachwechsel, Mobilansicht ohne Querscrollen, Suche sowie Regressionstests für bereits behobene Fehler.
+
+Am Ende räumt das Skript alle Test-Container wieder ab. Eine laufende Produktion stört es nicht, weil der Test eigene Namen,
+ein eigenes Netz und keinen veröffentlichten Port verwendet. `SKIP_BUILD=1 ./scripts/test-docker.sh` nutzt vorhandene Images.
+
+Im Dev-Container laufen beim Start einmal die Unit-Tests, danach wird bei jeder Änderung in `src/` neu gebaut
+(Seite neu laden genügt). Der Dev-Port ist nur lokal erreichbar. `dist/` entsteht dabei im Projektordner und ist in `.gitignore`.
+
+Wer Node.js 22 lokal hat, kann auch direkt `npm ci`, `npm test`, `npm run dev` verwenden.
 
 ### Neues Werkzeug hinzufügen
 
@@ -104,6 +122,12 @@ src/styles/           Design-Tokens, Layout, Komponenten, Werkzeug-Styles
 src/js/lib/           Zufallskern und Farbfunktionen (rein, getestet)
 src/js/tools/         ein Modul pro Werkzeug, Texte liegen direkt daneben
 src/js/               Router, i18n, Theme, UI-Bausteine
-scripts/build.mjs     esbuild: je ein JS- und CSS-Bundle mit Hash im Dateinamen
+scripts/build.mjs     esbuild: je ein JS- und CSS-Bundle mit Hash im Dateinamen (--watch für Entwicklung)
+scripts/test-docker.sh  kompletter Testlauf in Docker
 nginx/                Konfiguration für Produktion
+test/                 Unit-Tests (laufen beim Image-Build)
+test/e2e/             HTTP- und Browser-Tests gegen den laufenden Container
+docker-compose.yml       Produktion
+docker-compose.test.yml  Produktions-Container + Test-Container
+docker-compose.dev.yml   Entwicklung mit Live-Neubau
 ```

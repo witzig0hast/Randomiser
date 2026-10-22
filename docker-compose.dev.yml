@@ -1,0 +1,22 @@
+# Entwicklung ohne lokales Node.js: baut bei jeder Änderung in src/ neu.
+#   docker compose -f docker-compose.dev.yml up
+# Danach http://127.0.0.1:5173 öffnen (nur lokal erreichbar).
+name: randomiser-dev
+
+services:
+  dev:
+    image: node:22-alpine
+    working_dir: /app
+    command: sh -c "npm ci --no-audit --no-fund && npm test && npm run dev"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8080
+    ports:
+      - "127.0.0.1:${DEV_PORT:-5173}:8080"
+    volumes:
+      - .:/app
+      # Eigene node_modules im Container (esbuild braucht die Linux-Binärdatei).
+      - node_modules:/app/node_modules
+
+volumes:
+  node_modules:

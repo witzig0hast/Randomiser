@@ -1,0 +1,12 @@
+{
+  "name": "randomiser-e2e",
+  "private": true,
+  "type": "module",
+  "description": "End-to-End-Tests gegen den laufenden Produktions-Container (siehe docker-compose.test.yml).",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 \"*.e2e.mjs\""
+  },
+  "dependencies": {
+    "playwright": "1.56.1"
+  }
+}
